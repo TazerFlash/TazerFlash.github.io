@@ -11,7 +11,7 @@ All copy lives in **[`src/content.ts`](src/content.ts)**. Components only render
 
 ### Before deploying
 
-- [ ] `contact.linkedin` in `src/content.ts`: LinkedIn profile URL
+- [x] `contact.linkedin` in `src/content.ts`: LinkedIn profile URL
 - [ ] On-Device RAG project `links[0].href` in `src/content.ts`: repository URL
 - [ ] Google Peer Bonus `description` in `src/content.ts`: one line on what ATO NoteMaker does
 - [ ] `public/resume.pdf`: latest resume (the "Download Resume" buttons link here)

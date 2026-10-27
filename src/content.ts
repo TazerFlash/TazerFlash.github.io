@@ -16,7 +16,7 @@ export const site = {
 
 export const contact = {
   email: 'rohanpolwork@gmail.com',
-  linkedin: '', // TODO: add LinkedIn profile URL
+  linkedin: 'https://www.linkedin.com/in/rohan-pol-/',
   github: 'https://github.com/TazerFlash',
 };
 
