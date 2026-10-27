@@ -1,0 +1,68 @@
+---
+import { projects } from '../content';
+import { rich } from '../lib/rich';
+import Section from './Section.astro';
+import Chip from './Chip.astro';
+import Icon from './Icon.astro';
+---
+
+<Section id="projects" index="03" title="Projects">
+  <div class="grid gap-6 md:grid-cols-2">
+    {
+      projects.map((p) => {
+        const links = p.links.filter((l) => l.href);
+        return (
+          <article
+            data-reveal
+            class="flex flex-col rounded-xl border border-line bg-bg p-6 transition-colors hover:border-muted/50 sm:p-7"
+          >
+            <h3 class="text-lg font-semibold tracking-tight text-fg">{p.title}</h3>
+            <p class="mt-2 text-muted">{p.description}</p>
+
+            <ul class="mt-5 flex flex-wrap gap-2" aria-label="Key results">
+              {p.metrics.map((m) => (
+                <li>
+                  <Chip variant="metric">{m}</Chip>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="mt-5 space-y-3 text-sm text-muted">
+              {p.highlights.map((h) => (
+                <li class="relative pl-5 before:absolute before:top-[0.7em] before:left-0 before:h-px before:w-2.5 before:bg-muted/60">
+                  <Fragment set:html={rich(h)} />
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-auto pt-6">
+              <ul class="flex flex-wrap gap-2" aria-label="Technologies">
+                {p.tags.map((t) => (
+                  <li>
+                    <Chip>{t}</Chip>
+                  </li>
+                ))}
+              </ul>
+              {links.length > 0 && (
+                <div class="mt-5 flex gap-4 border-t border-line pt-5">
+                  {links.map((l) => (
+                    <a
+                      href={l.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="inline-flex items-center gap-2 text-sm font-medium text-fg hover:text-accent"
+                    >
+                      <Icon name="github" /> {l.label}
+                      <span class="sr-only">repository for {p.title} (opens in a new tab)</span>
+                      <Icon name="external" class="h-3.5 w-3.5 text-muted" />
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        );
+      })
+    }
+  </div>
+</Section>

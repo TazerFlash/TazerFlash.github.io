@@ -1,0 +1,118 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
+/* Theme tokens. One accent colour; light and dark palettes swap via [data-theme]. */
+:root {
+  --bg: #ffffff;
+  --surface: #f6f7f9;
+  --fg: #0c0e13;
+  --muted: #525a68;
+  --line: #e3e6eb;
+  --accent: #2253d1;
+  --accent-ink: #ffffff;
+  --accent-soft: #ebf0fc;
+  color-scheme: light;
+}
+
+[data-theme='dark'] {
+  --bg: #0b0d11;
+  --surface: #12151b;
+  --fg: #eceef2;
+  --muted: #9ba2ae;
+  --line: #242833;
+  --accent: #82a6ff;
+  --accent-ink: #0b0d11;
+  --accent-soft: rgb(130 166 255 / 0.12);
+  color-scheme: dark;
+}
+
+/* No-JS fallback: follow the system preference. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --bg: #0b0d11;
+    --surface: #12151b;
+    --fg: #eceef2;
+    --muted: #9ba2ae;
+    --line: #242833;
+    --accent: #82a6ff;
+    --accent-ink: #0b0d11;
+    --accent-soft: rgb(130 166 255 / 0.12);
+    color-scheme: dark;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    background: var(--bg);
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  /* The page itself never scrolls; sections are panels on a horizontal track. */
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+  [data-panel] {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  strong {
+    color: var(--fg);
+    font-weight: 600;
+  }
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Experience tabs: only the selected role shows once JS is running. */
+.js [role='tabpanel'][data-inactive] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-reveal] {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+      opacity 0.7s ease,
+      transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .js [data-reveal].is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}

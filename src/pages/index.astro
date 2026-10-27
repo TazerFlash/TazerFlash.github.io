@@ -1,0 +1,30 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import About from '../components/About.astro';
+import Experience from '../components/Experience.astro';
+import Projects from '../components/Projects.astro';
+import Skills from '../components/Skills.astro';
+import Achievements from '../components/Achievements.astro';
+import Contact from '../components/Contact.astro';
+import Pager from '../components/Pager.astro';
+---
+
+<Base>
+  <Header />
+  <main
+    id="main"
+    data-track
+    class="no-scrollbar flex min-h-0 flex-1 snap-x snap-mandatory overflow-x-auto overflow-y-hidden overscroll-x-contain"
+  >
+    <Hero />
+    <About />
+    <Experience />
+    <Projects />
+    <Skills />
+    <Achievements />
+    <Contact />
+  </main>
+  <Pager />
+</Base>

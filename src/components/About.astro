@@ -1,0 +1,37 @@
+---
+import { about } from '../content';
+import Section from './Section.astro';
+import Icon from './Icon.astro';
+---
+
+<Section id="about" index="01" title="About">
+  <div class="grid gap-10 md:grid-cols-[1fr_18rem] md:gap-14">
+    <div data-reveal class="space-y-5 text-lg text-muted">
+      {about.paragraphs.map((p) => <p>{p}</p>)}
+    </div>
+
+    <aside data-reveal class="space-y-6 rounded-xl border border-line bg-surface p-6 text-sm" aria-label="Quick facts">
+      <div>
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Location</p>
+        <p class="mt-2 flex items-center gap-2 text-fg"><Icon name="pin" /> {about.location}</p>
+      </div>
+      <div>
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Education</p>
+        <p class="mt-2 flex items-start gap-2 text-fg">
+          <Icon name="cap" class="mt-1 h-4 w-4 shrink-0" />
+          <span>
+            {about.education.school}
+            <span class="block text-muted">{about.education.degree}</span>
+            <span class="block font-mono text-xs text-muted">{about.education.dates}</span>
+          </span>
+        </p>
+      </div>
+      <div>
+        <p class="font-mono text-xs tracking-wider text-muted uppercase">Focus</p>
+        <ul class="mt-2 space-y-1 text-fg">
+          {about.focus.map((f) => <li>{f}</li>)}
+        </ul>
+      </div>
+    </aside>
+  </div>
+</Section>

@@ -1,0 +1,92 @@
+---
+import fs from 'node:fs';
+import path from 'node:path';
+import { hero, site } from '../content';
+import Icon from './Icon.astro';
+
+const base = import.meta.env.BASE_URL;
+const hasPhoto = fs.existsSync(path.join(process.cwd(), 'public', site.photo));
+---
+
+<section
+  id="top"
+  data-panel
+  tabindex="-1"
+  aria-labelledby="hero-title"
+  class="relative h-full w-full shrink-0 snap-start snap-always overflow-x-hidden overflow-y-auto overscroll-y-contain outline-none"
+>
+  <div
+    class="pointer-events-none absolute inset-0 bg-[radial-gradient(var(--line)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_top,black_30%,transparent_75%)] bg-size-[22px_22px]"
+    aria-hidden="true"
+  >
+  </div>
+
+  <div class="relative mx-auto flex min-h-full max-w-5xl flex-col justify-center px-5 py-12 sm:px-8 sm:py-16">
+    <div class="flex items-center gap-4">
+      {
+        hasPhoto ? (
+          <img
+            src={`${base}${site.photo}`}
+            alt={`Portrait of ${site.name}`}
+            width="64"
+            height="64"
+            class="h-16 w-16 rounded-full border border-line object-cover"
+          />
+        ) : (
+          <span
+            class="grid h-16 w-16 place-items-center rounded-full border border-line bg-surface font-mono text-lg font-medium text-fg"
+            aria-hidden="true"
+          >
+            {site.initials}
+          </span>
+        )
+      }
+      <p class="font-mono text-xs tracking-wider text-muted uppercase">{hero.eyebrow}</p>
+    </div>
+
+    <h1 id="hero-title" class="mt-8 text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
+      {hero.name}
+    </h1>
+    <p class="mt-3 text-xl font-medium tracking-tight text-accent sm:text-2xl">{hero.headline}</p>
+    <p class="mt-6 max-w-2xl text-lg text-muted sm:text-xl">{hero.tagline}</p>
+
+    <div class="mt-9 flex flex-wrap gap-3">
+      <a
+        href="#projects"
+        class="inline-flex items-center gap-2 rounded-lg bg-accent px-5 py-3 text-sm font-medium text-accent-ink transition-opacity hover:opacity-90"
+      >
+        View Projects <Icon name="arrow" />
+      </a>
+      <a
+        href={`${base}${site.resume}`}
+        download
+        class="inline-flex items-center gap-2 rounded-lg border border-line bg-bg px-5 py-3 text-sm font-medium text-fg transition-colors hover:border-fg"
+      >
+        <Icon name="download" /> Download Resume
+      </a>
+      <a
+        href="#contact"
+        class="inline-flex items-center gap-2 rounded-lg px-5 py-3 text-sm font-medium text-fg transition-colors hover:bg-surface"
+      >
+        <Icon name="mail" /> Contact
+      </a>
+    </div>
+
+    <dl class="mt-12 grid grid-cols-2 gap-px overflow-hidden rounded-xl border border-line bg-line lg:grid-cols-4">
+      {
+        hero.stats.map((s) => (
+          <div class="grid grid-rows-[auto_1fr] content-start gap-2 bg-bg p-5 sm:p-6">
+            <dt class="row-start-2 text-xs leading-snug text-muted sm:text-sm">{s.label}</dt>
+            <dd class="row-start-1 font-mono text-2xl font-medium tracking-tight text-fg sm:text-3xl">{s.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <p class="mt-8 hidden items-center gap-2 font-mono text-xs text-muted sm:flex" aria-hidden="true">
+      Scroll or use <kbd class="rounded border border-line px-1.5 py-0.5">←</kbd><kbd
+        class="rounded border border-line px-1.5 py-0.5">→</kbd
+      > to move between sections
+    </p>
+  </div>
+</section>

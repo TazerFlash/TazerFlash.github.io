@@ -1,0 +1,18 @@
+---
+import { achievements } from '../content';
+import Section from './Section.astro';
+---
+
+<Section id="achievements" index="05" title="Achievements">
+  <ul class="grid gap-4 md:grid-cols-3">
+    {
+      achievements.map((a) => (
+        <li data-reveal class="rounded-xl border border-line bg-surface p-6">
+          <p class="font-mono text-xs text-accent">{a.year}</p>
+          <h3 class="mt-3 font-semibold tracking-tight text-fg">{a.title}</h3>
+          <p class="mt-2 text-sm text-muted">{a.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+</Section>

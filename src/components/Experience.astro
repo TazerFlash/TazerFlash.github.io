@@ -1,0 +1,113 @@
+---
+import { experience } from '../content';
+import { rich } from '../lib/rich';
+import Section from './Section.astro';
+import Chip from './Chip.astro';
+---
+
+<Section id="experience" index="02" title="Experience">
+  <div data-reveal class="grid gap-6 md:grid-cols-[13rem_1fr] md:gap-10">
+    <div
+      role="tablist"
+      aria-label="Roles"
+      class="no-scrollbar relative -mx-5 flex gap-2 overflow-x-auto px-5 md:mx-0 md:flex-col md:gap-0 md:overflow-visible md:border-l md:border-line md:px-0"
+    >
+      {
+        experience.map((job, i) => (
+          <button
+            type="button"
+            role="tab"
+            id={`job-tab-${i}`}
+            aria-controls={`job-${i}`}
+            aria-selected={i === 0 ? 'true' : 'false'}
+            tabindex={i === 0 ? 0 : -1}
+            class="shrink-0 rounded-lg border border-line px-3 py-2 text-left transition-colors hover:bg-surface aria-selected:border-accent aria-selected:bg-accent-soft md:-ml-px md:rounded-none md:border-0 md:border-l-2 md:border-transparent md:px-4 md:py-3 md:aria-selected:border-accent"
+          >
+            <span class="block text-sm font-semibold text-fg">
+              {job.company} <span class="font-normal text-muted">· {job.short}</span>
+            </span>
+            <span class="mt-0.5 block font-mono text-[11px] text-muted">{job.dates}</span>
+          </button>
+        ))
+      }
+    </div>
+
+    <div>
+      {
+        experience.map((job, i) => (
+          <div
+            role="tabpanel"
+            id={`job-${i}`}
+            aria-labelledby={`job-tab-${i}`}
+            tabindex="0"
+            data-inactive={i === 0 ? undefined : ''}
+            class="rounded-lg outline-offset-8"
+          >
+            <h3 class="text-lg font-semibold tracking-tight text-fg sm:text-xl">
+              {job.role} <span class="text-accent">@ {job.company}</span>
+            </h3>
+            <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
+              <span class="font-mono text-xs">{job.dates}</span>
+              <span>{job.location}</span>
+              {job.badge && (
+                <span class="rounded-full border border-accent/40 px-2 py-0.5 font-mono text-[11px] text-accent">
+                  {job.badge}
+                </span>
+              )}
+            </p>
+
+            <ul class="mt-4 flex flex-wrap gap-2" aria-label="Key results">
+              {job.metrics.map((m) => (
+                <li>
+                  <Chip variant="metric">{m}</Chip>
+                </li>
+              ))}
+            </ul>
+
+            <ul class="mt-5 space-y-3 text-muted">
+              {job.bullets.map((b) => (
+                <li class="relative pl-5 before:absolute before:top-[0.7em] before:left-0 before:h-px before:w-2.5 before:bg-muted/60">
+                  <Fragment set:html={rich(b)} />
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</Section>
+
+<script>
+  const tabs = [...document.querySelectorAll<HTMLButtonElement>('#experience [role="tab"]')];
+  const select = (i: number, focus = false) => {
+    tabs.forEach((tab, j) => {
+      const on = i === j;
+      tab.setAttribute('aria-selected', String(on));
+      tab.tabIndex = on ? 0 : -1;
+      document.getElementById(tab.getAttribute('aria-controls')!)!.toggleAttribute('data-inactive', !on);
+    });
+    // Scroll only the tab strip (on phones), never the page track.
+    if (focus) tabs[i].focus({ preventScroll: true });
+    const list = tabs[i].parentElement!;
+    const t = tabs[i];
+    if (t.offsetLeft < list.scrollLeft || t.offsetLeft + t.offsetWidth > list.scrollLeft + list.clientWidth)
+      list.scrollTo({ left: t.offsetLeft - 20, behavior: 'smooth' });
+  };
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(i));
+    tab.addEventListener('keydown', (e) => {
+      const keys: Record<string, number> = {
+        ArrowDown: i + 1,
+        ArrowRight: i + 1,
+        ArrowUp: i - 1,
+        ArrowLeft: i - 1,
+        Home: 0,
+        End: tabs.length - 1,
+      };
+      if (!(e.key in keys)) return;
+      e.preventDefault();
+      select((keys[e.key] + tabs.length) % tabs.length, true);
+    });
+  });
+</script>
