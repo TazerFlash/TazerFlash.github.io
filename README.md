@@ -14,7 +14,7 @@ All copy lives in **[`src/content.ts`](src/content.ts)**. Components only render
 - [x] `contact.linkedin` in `src/content.ts`: LinkedIn profile URL
 - [ ] On-Device RAG project `links[0].href` in `src/content.ts`: repository URL
 - [ ] Google Peer Bonus `description` in `src/content.ts`: one line on what ATO NoteMaker does
-- [ ] `public/resume.pdf`: latest resume (the "Download Resume" buttons link here)
+- [x] `public/resume.pdf`: latest resume (the "Download Resume" buttons link here)
 - [ ] Optional `public/profile.jpg`: square photo; replaces the "RP" initials automatically at build time
 
 ## Run locally
