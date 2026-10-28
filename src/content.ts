@@ -129,7 +129,9 @@ export const experience: Job[] = [
 
 export type Project = {
   title: string;
+  short: string; // label on the Projects tab
   description: string;
+  status?: string; // optional build/test status shown under the description
   tags: string[];
   metrics: string[];
   highlights: string[];
@@ -139,6 +141,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: 'Bankruptcy Prediction for Financial Institutions',
+    short: 'Bankruptcy Prediction',
     description:
       'Predicting company bankruptcy from 95 financial ratios on a highly imbalanced dataset (3% bankrupt).',
     tags: ['Python', 'Scikit-Learn', 'Random Forest', 'XGBoost', 'SMOTE'],
@@ -151,16 +154,31 @@ export const projects: Project[] = [
     links: [{ label: 'GitHub', href: 'https://github.com/TazerFlash/Prediction-of-bankruptcy-for-a-Company' }],
   },
   {
-    title: 'On-Device Contextual RAG for Finance',
+    title: 'On-Device Financial Copilot (Dual-Memory RAG)',
+    short: 'On-Device Financial Copilot',
     description:
-      'A privacy-first RAG assistant for financial analysis that runs entirely on a mobile device.',
-    tags: ['Qwen1.5', 'llama.cpp', 'FAISS', 'MiniLM', 'GGUF quantization'],
-    metrics: ['On-device', 'No cloud round-trips'],
-    highlights: [
-      'Architected a dual-memory RAG system using local FAISS indices and MiniLM embeddings, keeping all data on-device with no cloud round-trips.',
-      'Compiled and quantized the Qwen1.5 LLM to GGUF format for real-time inference on edge devices.',
+      'An offline-first financial copilot that answers questions about SEC filings in the context of the user’s own portfolio, without sending any data off the device.',
+    status: 'Runs end to end on desktop and on an Android emulator (Pixel 8 Pro).',
+    tags: [
+      'TypeScript',
+      'React Native',
+      'llama.cpp / llama.rn',
+      'Qwen2.5-0.5B-Instruct (4-bit GGUF)',
+      'bge-small',
+      'BM25',
+      'Hybrid RAG',
+      'SEC EDGAR',
     ],
-    links: [{ label: 'GitHub', href: '' }], // TODO: add repository URL
+    metrics: ['hit@3 2/6 → 18/18', 'TTFT 6.0 s → ~3.3 s', '3.4 → 9.8 tok/s', '~256 MB memory'],
+    highlights: [
+      'Dual-memory design: Layer 1 searches **~3,300 passages** from the latest 10-K and 10-Q filings; Layer 2 holds the user’s watchlist, target prices, sentiment and notes, capped at **1,000 tokens**. Answers follow a Facts → Impact on you → Bottom line format and cite their sources.',
+      'Hybrid retrieval (bge-small embeddings + BM25 keywords, fused by reciprocal rank) with company filtering, recency for “last quarter” questions and near-duplicate removal. An eval harness lifted retrieval hit@3 from **2/6 to 18/18** (6 questions × 3 runs).',
+      'Halved time to first token (**6.0 s → ~3.3 s**) and kept app-owned memory at **~256 MB** on a laptop CPU.',
+      'On Android, patched llama.rn to load its AVX2 build, raising generation from **3.4 to 9.8 tokens/s** and cutting a full answer from **~162 s to ~40 s** on the emulator.',
+      'Benchmarked Qwen2.5 0.5B vs 1.5B and found the remaining errors come from the small model answering from the top-ranked passage; a re-ranker is the next step.',
+      'Platform-agnostic TypeScript core shared by desktop and the Android app, with **23 unit tests**.',
+    ],
+    links: [{ label: 'GitHub', href: 'https://github.com/TazerFlash/Contextual_Stock_Tracker' }],
   },
 ];
 
@@ -186,8 +204,8 @@ export const skills = [
     items: [
       'RAG Pipelines',
       'Agentic Pipelines (Gemini)',
-      'Embeddings & Vector Search (FAISS)',
-      'LLM Quantization (GGUF)',
+      'Embeddings & Vector Search',
+      'On-Device LLM Inference (llama.cpp, GGUF)',
     ],
   },
 ];
