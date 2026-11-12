@@ -140,6 +140,27 @@ export type Project = {
 
 export const projects: Project[] = [
   {
+    title: 'De-Riddled: Real-Time Account-Takeover Detection',
+    short: 'De-Riddled (ATO Detection)',
+    description:
+      'Scores every login attempt for account-takeover risk and returns ALLOW, CHALLENGE or BLOCK in milliseconds with the top three reasons, built on 31M logins from the public RBA dataset.',
+    status: 'Live demo dashboard and project page online; the one-time test-window evaluation is still to run.',
+    tags: ['Python', 'DuckDB', 'SQL', 'XGBoost', 'SHAP', 'FastAPI', 'MLflow', 'Streamlit', 'Claude API'],
+    metrics: ['28/33 takeovers stopped', '0.051% legit challenged', '+39 pts vs baseline', 'p95 2.3 ms'],
+    highlights: [
+      'Calibrated XGBoost on **39 point-in-time SQL features** with cost-model thresholds stopped **28 of 33** validation takeovers while challenging **0.051%** of legitimate logins; a failed-password rule stopped **0**. That is **+39 points** over a likelihood-ratio baseline at the same friction (paired McNemar p = 0.001).',
+      'FastAPI scorer with in-memory per-account state: **349 logins/s**, **p95 2.3 ms** scoring and **0 fail-opens**, with decisions identical to the offline policy on all **307,562** replayed logins.',
+      'An LLM red team wrote attack campaigns that ran through the real scorer and exposed a blind spot: an attacker’s own failed guesses made them look familiar. The fix raised synthetic takeovers stopped from **2 to 78 of 300**.',
+      'GenAI layer kept out of the decision: a Claude case narrator with citation grounding (**93.4%** strict faithfulness, **0** unsupported claims on held-out alerts) and a guarded SQL agent (**9–10 of 10** held-out questions).',
+      'Found and fixed a country bias (genuine Romanian users challenged at **131×** the average rate) and a non-monotonic reputation response; MLflow registry, PSI drift monitoring and an analyst dashboard complete the system.',
+    ],
+    links: [
+      { label: 'Live demo', href: 'https://tazerflash-deriddled.streamlit.app/' },
+      { label: 'Project page', href: 'https://tazerflash.github.io/DeRiddled-ATO-Detection-Engine/' },
+      { label: 'GitHub', href: 'https://github.com/TazerFlash/DeRiddled-ATO-Detection-Engine' },
+    ],
+  },
+  {
     title: 'Bankruptcy Prediction for Financial Institutions',
     short: 'Bankruptcy Prediction',
     description:
